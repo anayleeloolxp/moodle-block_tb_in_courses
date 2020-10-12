@@ -1,5 +1,7 @@
 # Leeloo LXP In Progress Courses Block
+THis block allows admin to show inprogess courses of a user.
 
+In prigress means the courses user is enrolled and the progress is greater then 0% and less than 100%
 Installation Instructions
 =========================
 
