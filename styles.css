@@ -663,3 +663,7 @@
     border-radius: 0;
     position: relative;
 }
+
+.tb_in_courses_list .owl-item .coursebox {
+    min-width: 100%;
+}
