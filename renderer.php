@@ -135,11 +135,17 @@ class block_tb_in_courses_renderer extends plugin_renderer_base {
             'u.lang, u.timezone, u.lastaccess, u.mnethostid, u.imagealt, r.name AS rolename, r.sortorder, ' .
             'r.shortname AS roleshortname, rn.name AS rolecoursealias';
 
-            if($config->inprogress_showasslider == 1){    
-                $html .= html_writer::start_div('tb_in_courses_list owl-carousel owl-theme');
-            }else{
-                $html .= html_writer::start_div('tb_in_courses_list');
-            }
+        if($config->inprogress_style == 0){
+            $colorstyle = 'style_light';
+        }else{
+            $colorstyle = 'style_dark';
+        }
+
+        if($config->inprogress_showasslider == 1){    
+            $html .= html_writer::start_div('tb_in_courses_list owl-carousel owl-theme '.$colorstyle);
+        }else{
+            $html .= html_writer::start_div('tb_in_courses_list '.$colorstyle);
+        }
         foreach ($courses as $key => $course) {
             $percent = block_tb_in_courses_progress_percent($course);
 
