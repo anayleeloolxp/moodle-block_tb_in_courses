@@ -165,7 +165,7 @@ function block_tb_in_courses_get_max_user_courses($showallcourses = false) {
     $options = array(
         'CURLOPT_RETURNTRANSFER' => true,
         'CURLOPT_HEADER' => false,
-        'CURLOPT_POST' => count($postdata),
+        'CURLOPT_POST' => 1,
     );
 
     if (!$output = $curl->post($url, $postdata, $options)) {
@@ -189,7 +189,7 @@ function block_tb_in_courses_get_max_user_courses($showallcourses = false) {
     $options = array(
         'CURLOPT_RETURNTRANSFER' => true,
         'CURLOPT_HEADER' => false,
-        'CURLOPT_POST' => count($postdata),
+        'CURLOPT_POST' => 1,
     );
 
     if (!$output = $curl->post($url, $postdata, $options)) {
@@ -235,7 +235,12 @@ function block_tb_in_courses_get_sorted_courses($showallcourses = false, $catego
 
     foreach ($allcourses as $courseid => $courseall) {
         $category = $DB->get_record('course_categories', array('id' => $courseall->category));
-        $path = trim($category->path) . '/';
+        if($category){
+            $path = trim($category->path) . '/';
+        }else{
+            $path = 0;
+        }
+        
 
         if ($categoryid == 0) {
             if (!array_key_exists($courseid, $enrolledcourses)) {
