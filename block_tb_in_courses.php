@@ -72,7 +72,7 @@ class block_tb_in_courses extends block_base {
         $settingleeloolxp = $resposedata->data->inprogress_courses;
 
         if (empty($settingleeloolxp->inprogress_course_title)) {
-            $settingleeloolxp->inprogress_course_title = get_string('displayname', 'block_tb_in_courses');
+            @$settingleeloolxp->inprogress_course_title = get_string('displayname', 'block_tb_in_courses');
         }
         $this->title = $settingleeloolxp->inprogress_course_title;
 
