@@ -158,14 +158,16 @@ function block_tb_in_courses_get_max_user_courses($showallcourses = false) {
     $leeloolxplicense = get_config('block_tb_in_courses')->license;
 
     $url = 'https://leeloolxp.com/api_moodle.php/?action=page_info';
-    $postdata = '&license_key=' . $leeloolxplicense;
+    $postdata = [
+        'license_key' => $leeloolxplicense,
+    ];
 
     $curl = new curl;
 
     $options = array(
         'CURLOPT_RETURNTRANSFER' => true,
         'CURLOPT_HEADER' => false,
-        'CURLOPT_POST' => 1,
+        'CURLOPT_POST' => count($postdata),
     );
 
     if (!$output = $curl->post($url, $postdata, $options)) {
@@ -182,14 +184,16 @@ function block_tb_in_courses_get_max_user_courses($showallcourses = false) {
 
     $url = $leeloolxpurl . '/admin/Theme_setup/get_inprogress_courses';
 
-    $postdata = '&license_key=' . $leeloolxplicense;
+    $postdata = [
+        'license_key' => $leeloolxplicense,
+    ];
 
     $curl = new curl;
 
     $options = array(
         'CURLOPT_RETURNTRANSFER' => true,
         'CURLOPT_HEADER' => false,
-        'CURLOPT_POST' => 1,
+        'CURLOPT_POST' => count($postdata),
     );
 
     if (!$output = $curl->post($url, $postdata, $options)) {
@@ -235,12 +239,11 @@ function block_tb_in_courses_get_sorted_courses($showallcourses = false, $catego
 
     foreach ($allcourses as $courseid => $courseall) {
         $category = $DB->get_record('course_categories', array('id' => $courseall->category));
-        if($category){
+        if ($category) {
             $path = trim($category->path) . '/';
-        }else{
+        } else {
             $path = 0;
         }
-        
 
         if ($categoryid == 0) {
             if (!array_key_exists($courseid, $enrolledcourses)) {
@@ -322,7 +325,7 @@ function block_tb_in_courses_build_progress($course, $config) {
     require_once($CFG->dirroot . '/grade/lib.php');
     $completestring = get_string('complete');
 
-    if ($config->inprogress_progressenabled == BLOCKS_TB_IN_COURSES_SHOWGRADES_NO) {
+    if (@$config->inprogress_progressenabled == BLOCKS_TB_IN_COURSES_SHOWGRADES_NO) {
         return '';
     }
 
@@ -364,36 +367,44 @@ function block_tb_in_courses_progress_percent($course) {
 /**
  * Fetch and Update Configration From L
  */
-function updateconfin_courses(){
-    $leeloolxplicense = get_config('block_tb_in_courses')->license;
-    
+function updateconfin_courses() {
+    if (isset(get_config('block_tb_in_courses')->license)) {
+        $leeloolxplicense = get_config('block_tb_in_courses')->license;
+    } else {
+        return;
+    }
+
     $url = 'https://leeloolxp.com/api_moodle.php/?action=page_info';
-    $postdata = '&license_key=' . $leeloolxplicense;
+    $postdata = [
+        'license_key' => $leeloolxplicense,
+    ];
     $curl = new curl;
     $options = array(
         'CURLOPT_RETURNTRANSFER' => true,
         'CURLOPT_HEADER' => false,
-        'CURLOPT_POST' => 1,
+        'CURLOPT_POST' => count($postdata),
     );
     if (!$output = $curl->post($url, $postdata, $options)) {
-        
+        $falsevar = 0;
     }
     $infoleeloolxp = json_decode($output);
     if ($infoleeloolxp->status != 'false') {
         $leeloolxpurl = $infoleeloolxp->data->install_url;
     } else {
-        
+        $falsevar = 0;
     }
     $url = $leeloolxpurl . '/admin/Theme_setup/get_inprogress_courses';
-    $postdata = '&license_key=' . $leeloolxplicense;
+    $postdata = [
+        'license_key' => $leeloolxplicense,
+    ];
     $curl = new curl;
     $options = array(
         'CURLOPT_RETURNTRANSFER' => true,
         'CURLOPT_HEADER' => false,
-        'CURLOPT_POST' => 1,
+        'CURLOPT_POST' => count($postdata),
     );
     if (!$output = $curl->post($url, $postdata, $options)) {
-        
+        $falsevar = 0;
     }
     set_config('settingsjson', base64_encode($output), 'block_tb_in_courses');
 }
