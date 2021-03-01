@@ -246,11 +246,11 @@ function block_tb_in_courses_get_sorted_courses($showallcourses = false, $catego
         }
 
         if ($categoryid == 0) {
-            if (!array_key_exists($courseid, $enrolledcourses)) {
+            if (array_key_exists($courseid, $enrolledcourses)) {
                 $courses[$courseid] = $courseall;
             }
         } else {
-            if (!array_key_exists($courseid, $enrolledcourses) && (strpos($path, $categorythispath) !== false)) {
+            if (array_key_exists($courseid, $enrolledcourses) && (strpos($path, $categorythispath) !== false)) {
                 $courses[$courseid] = $courseall;
             }
         }
